@@ -13,6 +13,7 @@ install:
 	pip install -r requirements.txt
 
 build:
+	rm -rf ./dist
 	python3 -m build
 
 release: build publish
