@@ -6,6 +6,8 @@ from fyodorov_utils.decorators.logging import error_handler
 from fyodorov_utils.config.config import Settings
 from fyodorov_utils.config.supabase import get_supabase
 
+
+
 settings = Settings()
 security = HTTPBearer()
 supabase = get_supabase()

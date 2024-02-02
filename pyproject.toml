@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fyodorov_utils"
-version = "0.2.5"
+version = "0.2.11"
 authors = [
     { name="Daniel Ransom", email="02masseur.alibis@icloud.com" },
 ]
-description = "Utils used across services in the FyodorovAI suite"
+description = "Utils used across services in the Fyodorov AI suite"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
