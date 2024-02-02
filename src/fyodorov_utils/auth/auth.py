@@ -1,12 +1,11 @@
 from fastapi import Depends, HTTPException, Security, Body, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import jwt
+from starlette.status import HTTP_403_FORBIDDEN
 from datetime import datetime, timedelta
 from fyodorov_utils.decorators.logging import error_handler
 from fyodorov_utils.config.config import Settings
 from fyodorov_utils.config.supabase import get_supabase
-
-
 
 settings = Settings()
 security = HTTPBearer()
@@ -14,6 +13,7 @@ supabase = get_supabase()
 
 async def authenticate(credentials: HTTPAuthorizationCredentials = Security(security)):
     try:
+        print(f"Authenticating user: {credentials} with JWT secret: {settings.JWT_SECRET}")
         payload = jwt.decode(credentials.credentials, settings.JWT_SECRET, algorithms=["HS256"], audience="authenticated")
         # Perform additional validation checks as needed (e.g., expiration, issuer, audience)
         return payload  # Or a user object based on the payload
