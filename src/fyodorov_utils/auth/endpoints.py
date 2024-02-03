@@ -5,16 +5,16 @@ users_app = FastAPI(title="Fyodorov-Auth", description="Common auth endpoints fo
 
 @users_app.get('/')
 async def root(user = Depends(authenticate)):
-    print(f"Logged in as: {user}")
-    return {"message": "logged in as: " + user.email}
+    print(f"[/users/] User: {user}")
+    return {"message": "logged in"}
 
 @users_app.post('/sign_up')
-async def sign_up_endpoint(email: str = Body(...), password: str = Body(...), invite_code: str = Body(...), user = Depends(authenticate)):
-    return await sign_up(email, password, invite_code, user)
+async def sign_up_endpoint(email: str = Body(...), password: str = Body(...), invite_code: str = Body(...)):
+    return await sign_up(email, password, invite_code)
 
 @users_app.post('/sign_in')
-async def sign_in_endpoint(email: str = Body(...), password: str = Body(...), user = Depends(authenticate)):
-    return await sign_in(email, password, user)
+async def sign_in_endpoint(email: str = Body(...), password: str = Body(...)):
+    return await sign_in(email, password)
 
 @users_app.post('/create_api_key')
 async def create_api_key_endpoint(expiration: int = 15, user = Depends(authenticate)):

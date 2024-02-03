@@ -5,7 +5,7 @@ set -ex -o pipefail
 BASE="$HOME/Projects/Fyodorov/fyodorov_utils"
 FILE="$BASE/pyproject.toml"
 
-
+date
 # Check if --upgrade flag is not passed
 if [[ "$1" == "--upgrade" ]]; then
     echo "Reinstalling lib in all services to version $NEW_VERSION..."
@@ -32,3 +32,5 @@ bump_and_reinstall() {
 
 bump_and_reinstall $BASE/../Tsiolkovsky/src
 bump_and_reinstall $BASE/../Gagarin/src
+
+date

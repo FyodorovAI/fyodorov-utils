@@ -13,7 +13,6 @@ supabase = get_supabase()
 
 async def authenticate(credentials: HTTPAuthorizationCredentials = Security(security)):
     try:
-        print(f"Authenticating user: {credentials} with JWT secret: {settings.JWT_SECRET}")
         payload = jwt.decode(credentials.credentials, settings.JWT_SECRET, algorithms=["HS256"], audience="authenticated")
         # Perform additional validation checks as needed (e.g., expiration, issuer, audience)
         return payload  # Or a user object based on the payload
