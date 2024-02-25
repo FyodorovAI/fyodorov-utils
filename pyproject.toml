@@ -8,7 +8,7 @@ version = "0.2.71"
 authors = [
     { name="Daniel Ransom", email="02masseur.alibis@icloud.com" },
 ]
-description = "Library for creating LLM-based agents with tools and RAG"
+description = "Utils used across services in the Fyodorov AI suite"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
@@ -18,8 +18,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/FyodorovAI/fyodorov-llm-agents"
-Issues = "https://github.com/FyodorovAI/fyodorov-llm-agents/issues"
+Homepage = "https://github.com/FyodorovAI/fyodorov-utils"
+Issues = "https://github.com/FyodorovAI/fyodorov-utils/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

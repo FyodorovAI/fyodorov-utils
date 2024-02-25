@@ -2,7 +2,7 @@
 
 set -ex -o pipefail
 
-BASE="$HOME/Projects/Fyodorov/fyodorov-llm-agents"
+BASE="$HOME/Projects/Fyodorov/fyodorov_utils"
 FILE="$BASE/pyproject.toml"
 
 date
@@ -26,8 +26,8 @@ NEW_VERSION=$(awk -F'"' '/^version =/ { print $2 }' $FILE)
 bump_and_reinstall() {
     DIRECTORY=$1
     echo "Bumping and reinstalling lib in $DIRECTORY/requirements.txt to version $NEW_VERSION..."
-    sed -i '' -E "s/fyodorov_llm_agents==.*/fyodorov_llm_agents==$NEW_VERSION/" $DIRECTORY/requirements.txt
-    source $DIRECTORY/venv/bin/activate && pip install --force-reinstall fyodorov_llm_agents==$NEW_VERSION && deactivate
+    sed -i '' -E "s/fyodorov_utils==.*/fyodorov_utils==$NEW_VERSION/" $DIRECTORY/requirements.txt
+    source $DIRECTORY/venv/bin/activate && pip install --force-reinstall fyodorov_utils==$NEW_VERSION && deactivate
 }
 
 bump_and_reinstall $BASE/../Tsiolkovsky/src

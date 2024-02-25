@@ -1,0 +1,5 @@
+fastapi
+asyncio
+PyJWT
+starlette
+supabase
