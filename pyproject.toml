@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fyodorov_llm_agents"
-version = "0.0.108"
+name = "fyodorov_utils"
+version = "0.2.71"
 authors = [
     { name="Daniel Ransom", email="02masseur.alibis@icloud.com" },
 ]
