@@ -2,8 +2,9 @@ from typing import Union
 from datetime import datetime, timedelta
 from fyodorov_utils.config.supabase import get_supabase
 from fyodorov_llm_agents.tools.tool import Tool as ToolModel
+from .base import Base
 
-class Tool():
+class Tool(Base):
     def create_from_plugin(access_token: str, plugin: dict) -> ToolModel:
         print("in func creating tool from plugin")
         tool = ToolModel.from_plugin(plugin)
