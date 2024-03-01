@@ -1,5 +1,0 @@
-requests
-pydantic
-openai
-pyyaml
-litellm
