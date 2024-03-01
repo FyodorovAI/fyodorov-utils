@@ -57,4 +57,8 @@ app.mount('/users', users_app)
 You can install `fyodorov_utils` using pip: 
 ```shell
 pip install fyodorov-utils==0.2.11
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> parent of 990ae6f (idk what the hell happened but apparently it works now)
