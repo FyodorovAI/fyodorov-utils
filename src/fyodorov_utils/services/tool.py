@@ -73,6 +73,7 @@ class Tool(Base):
             if not result.data:
                 print(f"No tool found with name {name} and user_id {user_id}")
                 return None
+            print('got tool from db', result.data[0])
             tool_dict = result.data[0]
             tool = ToolModel(**tool_dict)
             return tool
