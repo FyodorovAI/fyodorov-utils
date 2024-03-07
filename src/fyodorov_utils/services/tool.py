@@ -75,6 +75,9 @@ class Tool(Base):
                 return None
             print('got tool from db', result.data[0])
             tool_dict = result.data[0]
+            tool_dict['name'] = tool_dict['name_for_ai']
+            tool_dict['description'] = tool_dict['description_for_ai']
+            print('got tool from db', tool_dict)
             tool = ToolModel(**tool_dict)
             return tool
         except Exception as e:
