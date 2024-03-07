@@ -70,6 +70,9 @@ class Tool(Base):
             result = supabase.table('tools').select('*').eq('name_for_ai', name).eq('user_id', user_id).limit(1).execute()
             if not result.data: # If no tools found for this user check for public tools with same name
                 result = supabase.table('tools').select('*').eq('name_for_ai', name).eq('public', True).limit(1).execute()
+            if not result.data:
+                print(f"No tool found with name {name} and user_id {user_id}")
+                return None
             tool_dict = result.data[0]
             tool = ToolModel(**tool_dict)
             return tool
