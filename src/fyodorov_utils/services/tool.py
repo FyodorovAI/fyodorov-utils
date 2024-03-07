@@ -62,6 +62,22 @@ class Tool(Base):
             raise e
 
     @staticmethod
+    def get_by_name_and_user_id(access_token: str, name: str, user_id: str) -> ToolModel:
+        if not name:
+            raise ValueError('Tool name is required')
+        try:
+            supabase = get_supabase(access_token)
+            result = supabase.table('tools').select('*').eq('name_for_ai', name).eq('user_id', user_id).limit(1).execute()
+            if not result.data: # If no tools found for this user check for public tools with same name
+                result = supabase.table('tools').select('*').eq('name_for_ai', name).eq('public', True).limit(1).execute()
+            tool_dict = result.data[0]
+            tool = ToolModel(**tool_dict)
+            return tool
+        except Exception as e:
+            print('Error fetching tool', str(e))
+            raise e
+
+    @staticmethod
     def get_all_in_db(access_token: str, limit: int = 10, created_at_lt: datetime = datetime.now()) -> [dict]:
         try:
             supabase = get_supabase(access_token)
