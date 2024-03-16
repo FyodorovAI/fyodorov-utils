@@ -32,5 +32,6 @@ bump_and_reinstall() {
 
 bump_and_reinstall $BASE/../Tsiolkovsky/src
 bump_and_reinstall $BASE/../Gagarin/src
+bump_and_reinstall $BASE/../Dostoyevsky/src
 
 date
