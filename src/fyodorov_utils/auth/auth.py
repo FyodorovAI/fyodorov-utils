@@ -56,10 +56,17 @@ async def sign_up(email: str = Body(...), password: str = Body(...), invite_code
 
 @error_handler
 async def sign_in(email: str = Body(...), password: str = Body(...)):
-    user = supabase.auth.sign_in_with_password({
-        "email": email,
-        "password": password,
-    })
+    try:
+        user = supabase.auth.sign_in_with_password({
+            "email": email,
+            "password": password,
+        })
+    except supabase.auth.exceptions.AuthException as e:
+        print(f"Error signing in: {str(e)}")
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    except Exception as e:
+        print(f"Error signing in: {str(e)}")
+        raise HTTPException(status_code=401, detail="Error signing in")
     return {"message": "User signed in successfully", "jwt": user.session.access_token}
 
 
