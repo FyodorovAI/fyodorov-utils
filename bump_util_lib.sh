@@ -14,14 +14,14 @@ else
     awk -F'=' -v OFS='=' '/^version =/ { split($2, a, "."); a[3]++; $2 = a[1] "." a[2] "." a[3] "\""; print; next } 1' $FILE > tmp && mv tmp $FILE
     # Run make release
     make release
-    PAUSE=120
+    PAUSE=90
     set +x
     echo "Waiting for $PAUSE seconds..."
     for ((i=$PAUSE; i>0; i--))
     do
         # -e  => enable interpretation of backslash escapes
         # -n  => do not output the trailing newline
-        echo -en "\rCountdown: $i"
+        echo -en "\r\033[KCountdown: $i"
         sleep 1
     done
 
