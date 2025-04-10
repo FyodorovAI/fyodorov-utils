@@ -3,6 +3,11 @@ include .env
 # Set up virtual environment
 venv:
 	python3 -m venv venv
+	echo 'Run "source venv/bin/activate" to activate the virtual environment.'
+	echo 'Run "make install" to install the requirements.'
+	echo 'Run "make build" to build the package.'
+	echo 'Run "make publish" to publish the package.'
+	echo 'Run "make release" to build and publish the package.'
 
 # Publish the package to GitHub Packages
 publish:
