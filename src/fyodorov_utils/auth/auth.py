@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException, Security, Body
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import jwt
 from starlette.status import HTTP_403_FORBIDDEN
+import gotrue
 from datetime import datetime, timedelta
 from fyodorov_utils.decorators.logging import error_handler
 from fyodorov_utils.config.config import Settings
@@ -15,6 +16,7 @@ async def authenticate(credentials: HTTPAuthorizationCredentials = Security(secu
     try:
         payload = jwt.decode(credentials.credentials, settings.JWT_SECRET, algorithms=["HS256"], audience="authenticated")
         # Perform additional validation checks as needed (e.g., expiration, issuer, audience)
+        print(f"Decoded JWT payload: {payload}")
         return payload  # Or a user object based on the payload
     except jwt.PyJWTError as e:
         print(f"JWT error: {str(e)}")
@@ -61,6 +63,9 @@ async def sign_in(email: str = Body(...), password: str = Body(...)):
             "email": email,
             "password": password,
         })
+    except gotrue.errors.AuthApiError as e:
+        print(f"Error signing in: {type(e)} {str(e)}")
+        raise HTTPException(status_code=401, detail="Invalid credentials")
     except Exception as e:
         print(f"Error signing in: {type(e)} {str(e)}")
         raise HTTPException(status_code=401, detail="Error signing in")

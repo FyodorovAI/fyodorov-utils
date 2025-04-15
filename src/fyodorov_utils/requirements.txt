@@ -3,3 +3,4 @@ asyncio
 PyJWT
 starlette
 supabase
+pydantic>=2.11.3

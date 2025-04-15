@@ -5,7 +5,7 @@ from .config import Settings
 settings = Settings()
 
 def get_supabase(jwt: str = None) -> Client:
-    if jwt:
+    if jwt and jwt != "" and len(jwt.split(".")) == 3:
         return create_client(
             settings.SUPABASE_URL,
             settings.SUPABASE_KEY,
