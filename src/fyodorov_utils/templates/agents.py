@@ -1,4 +1,3 @@
-from fyodorov_llm_agents.tools.tool import Tool as ToolModel
 from fyodorov_llm_agents.agents.agent import Agent as AgentModel
 import yaml
 

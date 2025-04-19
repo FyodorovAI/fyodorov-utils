@@ -1,7 +1,6 @@
 from typing import Union
 from datetime import datetime, timedelta
 from fyodorov_utils.config.supabase import get_supabase
-from fyodorov_llm_agents.tools.tool import Tool as ToolModel
 
 class Model():
     id: str = None

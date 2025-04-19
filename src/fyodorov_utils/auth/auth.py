@@ -79,9 +79,7 @@ async def create_api_key(expiration: int = 15, user = Depends(authenticate)):
     return {"message": "API key created successfully", "api_key": api_key}
 
 
-def generate_jwt(user, days_to_expiry: int) -> str:
-    if not days_to_expiry:
-        days_to_expiry = 30
+def generate_jwt(user, days_to_expiry: int = 30) -> str:
     if days_to_expiry > 90 or days_to_expiry < 1:
         days_to_expiry = 30
     user['iat'] = datetime.utcnow()
