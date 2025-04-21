@@ -4,7 +4,7 @@ from fyodorov_utils.config.supabase import get_supabase
 from fyodorov_llm_agents.tools.mcp_tool import MCPTool as ToolModel
 from .base import Base
 
-class Tool(Base):
+class MCPTool(Base):
 
     @staticmethod    
     def create_in_db(access_token: str, tool: ToolModel) -> str:

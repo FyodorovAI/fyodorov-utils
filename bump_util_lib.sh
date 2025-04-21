@@ -40,6 +40,8 @@ bump_and_reinstall() {
     echo "Bumping and reinstalling lib in $DIRECTORY/requirements.txt to version $NEW_VERSION..."
     sed -i '' -E "s/fyodorov_utils==.*/fyodorov_utils==$NEW_VERSION/" $DIRECTORY/$FILE
     source $DIRECTORY/venv/bin/activate && pip install --force-reinstall fyodorov_utils==$NEW_VERSION && deactivate
+    cd $DIRECTORY && git commit -a -m "bump utils lib to $NEW_VERSION" && git push
+    cd $BASE
 }
 
 bump_and_reinstall $BASE/../Tsiolkovsky/src
