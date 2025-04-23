@@ -1,4 +1,4 @@
-from fyodorov_llm_agents.agents.agent import Agent as AgentModel
+from fyodorov_llm_agents.agents.agent_model import Agent as AgentModel
 import yaml
 
 def parse_yaml(yaml_str: str) -> dict:
