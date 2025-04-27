@@ -39,12 +39,6 @@ bump_and_reinstall() {
     FILE=${2:-Dockerfile}
     echo "Bumping and reinstalling lib in $DIRECTORY/requirements.txt to version $NEW_VERSION..."
     sed -i '' -E "s/fyodorov_utils==.*/fyodorov_utils==$NEW_VERSION/" $DIRECTORY/$FILE
-    source $DIRECTORY/venv/bin/activate && pip install --force-reinstall fyodorov_utils==$NEW_VERSION && deactivate
-    # Check if the directory ends in /src
-    if [[ $DIRECTORY == */src ]]; then
-        # Remove the last /src from the path
-        DIRECTORY=${DIRECTORY%/src}
-    fi
     cd $DIRECTORY && git commit -a -m "bump utils lib to $NEW_VERSION" && git push
     cd $BASE
 }
