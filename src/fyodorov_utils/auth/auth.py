@@ -64,7 +64,7 @@ async def sign_in(email: str = Body(...), password: str = Body(...)):
             "password": password,
         })
     except gotrue.errors.AuthApiError as e:
-        print(f"Error signing in: {type(e)} {str(e)}")
+        print(f"Error signing in - invalid credentials: {type(e)} {str(e)}")
         raise HTTPException(status_code=401, detail="Invalid credentials")
     except Exception as e:
         print(f"Error signing in: {type(e)} {str(e)}")
