@@ -15,7 +15,12 @@ from fyodorov_llm_agents.models.llm_service import LLM
 from fyodorov_llm_agents.instances.instance_service import Instance
 from fyodorov_llm_agents.agents.agent_service import Agent
 
-app = FastAPI(title="Fyodorov-Auth", description="Common auth endpoints for Fyodorov services", version="0.0.1")
+app = FastAPI(
+    title="Fyodorov-Auth",
+    description="Common auth endpoints for Fyodorov services",
+    version="0.0.1",
+)
+
 
 # Yaml parsing
 @app.post("/")
@@ -173,4 +178,3 @@ async def get_yaml_by_name(resource_type: str, user=Depends(authenticate)):
             status_code=400,
             detail=f"Error marshaling {resource_type} resources to yaml",
         )
-

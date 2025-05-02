@@ -22,3 +22,9 @@ build:
 	python3 -m build
 
 release: build publish
+
+lint:
+	ruff check src/fyodorov_utils/
+
+format:
+	ruff format src/fyodorov_utils/

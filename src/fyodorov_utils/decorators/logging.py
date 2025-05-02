@@ -2,6 +2,7 @@ from functools import wraps
 from fastapi import HTTPException
 import asyncio
 
+
 def error_handler(f):
     @wraps(f)
     async def wrapper(*args, **kwargs):
@@ -17,7 +18,9 @@ def error_handler(f):
         except Exception as exc:
             print(f"{f.__name__} - Unhandled Exception: {exc}")
             raise HTTPException(status_code=400, detail="An error occurred")
+
     return wrapper
+
 
 # Usage example
 # @app.get("/items/{item_id}")
