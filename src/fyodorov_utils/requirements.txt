@@ -4,4 +4,4 @@ PyJWT
 starlette
 supabase
 pydantic>=2.11.3
-fyodorov_llm_agents==0.4.47
+fyodorov_llm_agents==0.4.48
