@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fyodorov_utils"
-version = "0.3.22"
+version = "0.3.23"
 authors = [
     { name="Daniel Ransom", email="02masseur.alibis@icloud.com" },
 ]
