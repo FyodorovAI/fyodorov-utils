@@ -2,17 +2,15 @@ from fastapi import Depends, HTTPException, Security, Body
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import jwt
 from starlette.status import HTTP_403_FORBIDDEN
+import gotrue
 from datetime import datetime, timedelta
 from fyodorov_utils.decorators.logging import error_handler
 from fyodorov_utils.config.config import Settings
-from fyodorov_llm_agents.db import get_db_client
+from fyodorov_utils.config.supabase import get_supabase
 
 settings = Settings()
 security = HTTPBearer()
-
-# Supabase authentication client is removed. A new authentication system is required.
-# For now, direct Supabase auth calls will be commented out or raise errors.
-
+supabase = get_supabase()
 
 
 async def authenticate(credentials: HTTPAuthorizationCredentials = Security(security)):
@@ -39,78 +37,64 @@ async def sign_up(
     email: str = Body(...), password: str = Body(...), invite_code: str = Body(...)
 ):
     # Check if invite code exists
-    async with get_db_client() as db:
-        invite_code_data = await db.fetch_one(
-            "SELECT nr_uses, max_uses FROM public.invite_codes WHERE code = $1", invite_code
-        )
-    
-    if not invite_code_data:
+    invite_code_check = (
+        supabase.from_("invite_codes")
+        .select("nr_uses, max_uses")
+        .eq("code", invite_code)
+        .execute()
+    )
+    if not invite_code_check.data:
         raise HTTPException(status_code=401, detail="Invalid invite code")
 
+    invite_code_data = invite_code_check.data[0]
     nr_uses = invite_code_data["nr_uses"]
     max_uses = invite_code_data["max_uses"]
 
-    if max_uses != 0 and nr_uses >= max_uses: # 0 means unlimited uses
+    if nr_uses >= max_uses:
         raise HTTPException(
             status_code=401, detail="Invite code has reached maximum usage"
         )
 
-    # --- Supabase authentication removed ---
-    # user = supabase.auth.sign_up(
-    #     {
-    #         "email": email,
-    #         "password": password,
-    #         "options": {
-    #             "data": {
-    #                 "invite_code": invite_code,
-    #             }
-    #         },
-    #     }
-    # )
-    # Placeholder for generic user creation/authentication
-    print(f"User sign-up attempted for {email} with invite code {invite_code}. Supabase auth is currently disabled.")
-    # You would integrate your new user authentication system here.
-    # For now, we'll simulate success for invite code logic.
-    
+    user = supabase.auth.sign_up(
+        {
+            "email": email,
+            "password": password,
+            "options": {
+                "data": {
+                    "invite_code": invite_code,
+                }
+            },
+        }
+    )
     # Increment nr_uses in invite_codes table
     nr_uses += 1
-    async with get_db_client() as db:
-        res = await db.update(
-            "invite_codes",
-            {"nr_uses": nr_uses},
-            {"code": invite_code}
-        )
+    res = (
+        supabase.from_("invite_codes")
+        .update({"nr_uses": nr_uses})
+        .eq("code", invite_code)
+        .execute()
+    )
     print(f"response when updating invite code nr uses: {res}")
 
-    # Return a dummy JWT for now, as actual user creation is disabled
-    dummy_user_payload = {"sub": email, "session_id": "dummy_session_id", "email": email}
-    dummy_jwt = generate_jwt(dummy_user_payload)
-    return {"message": "User created successfully (auth disabled)", "jwt": dummy_jwt}
+    return {"message": "User created successfully", "jwt": user.session.access_token}
 
 
 @error_handler
 async def sign_in(email: str = Body(...), password: str = Body(...)):
     try:
-        # --- Supabase authentication removed ---
-        # user = supabase.auth.sign_in_with_password(
-        #     {
-        #         "email": email,
-        #         "password": password,
-        #     }
-        # )
-        # Placeholder for generic user authentication
-        print(f"User sign-in attempted for {email}. Supabase auth is currently disabled.")
-        # You would integrate your new user authentication system here.
-        # For now, we'll simulate success with a dummy JWT.
-        
-        # Simulate successful authentication for JWT generation
-        dummy_user_payload = {"sub": email, "session_id": "dummy_session_id", "email": email}
-        dummy_jwt = generate_jwt(dummy_user_payload)
-        
-    except Exception as e: # Catch all exceptions for now, as gotrue.errors.AuthApiError is gone
+        user = supabase.auth.sign_in_with_password(
+            {
+                "email": email,
+                "password": password,
+            }
+        )
+    except gotrue.errors.AuthApiError as e:
+        print(f"Error signing in - invalid credentials: {type(e)} {str(e)}")
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    except Exception as e:
         print(f"Error signing in: {type(e)} {str(e)}")
-        raise HTTPException(status_code=401, detail="Error signing in (auth disabled)")
-    return {"message": "User signed in successfully (auth disabled)", "jwt": dummy_jwt}
+        raise HTTPException(status_code=401, detail="Error signing in")
+    return {"message": "User signed in successfully", "jwt": user.session.access_token}
 
 
 @error_handler
