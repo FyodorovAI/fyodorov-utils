@@ -50,11 +50,14 @@ async def create_from_yaml(request: Request, user=Depends(authenticate)):
                 response["providers"].append(new_provider)
         print("Saved providers", response["providers"])
         if "models" in fyodorov_config:
-            for model_dict in fyodorov_config["models"]:
-                model = LLMModel.from_dict(model_dict)
-                print(f"Model: {model}")
+            for model in fyodorov_config["models"]:
+                if isinstance(model, dict):
+                    llm_model = LLMModel.from_dict(model)
+                elif isinstance(model, str):
+                    llm_model = LLM.get_model(user["sub"], model)
+                print(f"Model: {llm_model}")
                 new_model = await LLM.save_model_in_db(
-                    user["session_id"], user["sub"], model
+                    user["session_id"], user["sub"], llm_model
                 )
                 response["models"].append(new_model)
         print("Saved models", response["models"])
