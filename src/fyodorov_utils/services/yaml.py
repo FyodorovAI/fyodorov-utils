@@ -13,7 +13,7 @@ from fyodorov_llm_agents.tools.mcp_tool_model import MCPTool as ToolModel
 from fyodorov_llm_agents.instances.instance_model import InstanceModel
 from fyodorov_llm_agents.models.llm_service import LLM
 from fyodorov_llm_agents.instances.instance_service import Instance
-from fyodorov_llm_agents.agents.agent_service import Agent
+from fyodorov_llm_agents.agents.agent_service import AgentService as Agent
 
 app = FastAPI(
     title="Fyodorov-Auth",
