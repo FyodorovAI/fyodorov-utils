@@ -3,5 +3,6 @@ asyncio
 PyJWT
 starlette
 supabase
+gotrue
 pydantic>=2.11.3
 fyodorov_llm_agents==0.4.98
