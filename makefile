@@ -17,11 +17,15 @@ publish:
 install:
 	pip install -r requirements.txt
 
+# Install requirements from src/fyodorov_utils/requirements.txt
+install-src:
+	pip install -r src/fyodorov_utils/requirements.txt
+
 build:
 	rm -rf ./dist
 	python3 -m build
 
-release: build publish
+release: install-src install build publish
 
 lint:
 	ruff check src/fyodorov_utils/
