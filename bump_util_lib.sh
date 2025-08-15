@@ -21,7 +21,7 @@ bump_and_reinstall() {
 push() {
     DIRECTORY=$1
     FILE=${2:-Dockerfile}
-    echo "Running `git push` in $DIRECTORY to version $NEW_VERSION..."
+    echo "Running \`git push\` in $DIRECTORY to update to version $NEW_VERSION"
     cd $DIRECTORY && git push
     cd $BASE
 }
@@ -46,10 +46,7 @@ NAMES="Tsiolkovsky Gagarin Dostoyevsky"
 for NAME in $NAMES; do
   bump_and_reinstall "$BASE/../$NAME"
 done
-bump_and_reinstall $BASE README.md
-
-# (Optional) If you still need this extra call, keep it here:
-# bump_and_reinstall "$BASE" README.md
+bump_and_reinstall "$BASE" README.md
 
 # Pause/countdown
 PAUSE=${PAUSE:-90}
@@ -66,7 +63,7 @@ echo -e "\r\033[KDone."
 for NAME in $NAMES; do
   push "$BASE/../$NAME"
 done
-push $BASE README.md
+push "$BASE" README.md
 
 # Move to a new line when done
 echo
