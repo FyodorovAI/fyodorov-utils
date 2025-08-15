@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fyodorov_utils"
-version = "0.3.34"
+version = "0.3.35"
 authors = [
     { name="Daniel Ransom", email="02masseur.alibis@icloud.com" },
 ]
@@ -15,6 +15,16 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+]
+dependencies = [
+    "fastapi",
+    "asyncio",
+    "PyJWT",
+    "starlette",
+    "supabase",
+    "gotrue>=2",
+    "pydantic>=2.11.3",
+    "fyodorov_llm_agents==0.4.98",
 ]
 
 [project.urls]
