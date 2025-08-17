@@ -15,11 +15,11 @@ publish:
 
 # Install requirements from requirements.txt
 install:
-	pip install -r requirements.txt
+	uv pip install -r requirements.txt
 
 # Install requirements from src/fyodorov_utils/requirements.txt
 install-src:
-	pip install -r src/fyodorov_utils/requirements.txt
+	uv pip install .
 
 build:
 	rm -rf ./dist
