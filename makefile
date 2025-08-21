@@ -22,7 +22,7 @@ install-src:
 	uv pip install .
 
 build:
-	rm -rf ./dist
+	rm -rf ./dist ./build
 	python3 -m build
 
 release: install-src install build publish
