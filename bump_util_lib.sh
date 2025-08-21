@@ -33,7 +33,8 @@ if [[ "$1" == "--upgrade" ]]; then
 else
     # Bump the version in pyproject.toml
     awk -F'=' -v OFS='=' '/^version =/ { split($2, a, "."); a[3]++; $2 = a[1] "." a[2] "." a[3] "\""; print; next } 1' $FILE > tmp && mv tmp $FILE
-    NEW_VERSION=$(awk -F'"' '/^version =/ { print $2 }' $FILE)   # Run make release
+    NEW_VERSION=$(awk -F'"' '/^version =/ { print $2 }' $FILE)
+    # Run make release
     make release
 fi
 
