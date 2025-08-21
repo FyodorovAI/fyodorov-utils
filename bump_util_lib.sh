@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex -o pipefail
+set -e -o pipefail
 
 BASE="$HOME/Projects/Fyodorov/fyodorov_utils"
 FILE="$BASE/pyproject.toml"
@@ -33,7 +33,7 @@ if [[ "$1" == "--upgrade" ]]; then
 else
     # Bump the version in pyproject.toml
     awk -F'=' -v OFS='=' '/^version =/ { split($2, a, "."); a[3]++; $2 = a[1] "." a[2] "." a[3] "\""; print; next } 1' $FILE > tmp && mv tmp $FILE
-    # Run make release
+    NEW_VERSION=$(awk -F'"' '/^version =/ { print $2 }' $FILE)   # Run make release
     make release
 fi
 
@@ -50,7 +50,6 @@ bump_and_reinstall "$BASE" README.md
 
 # Pause/countdown
 PAUSE=${PAUSE:-90}
-set +x
 echo "Waiting for $PAUSE seconds..."
 for ((i=PAUSE; i>0; i--)); do
   # -e: interpret escapes, -n: no trailing newline
@@ -67,6 +66,5 @@ push "$BASE" README.md
 
 # Move to a new line when done
 echo
-set -x
 
 date
