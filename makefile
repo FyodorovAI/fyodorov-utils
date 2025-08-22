@@ -1,4 +1,5 @@
 include .env
+.PHONY: venv publish install install-src build release lint format
 
 # Set up virtual environment
 venv:
@@ -19,10 +20,11 @@ install:
 
 # Install requirements from src/fyodorov_utils/requirements.txt
 install-src:
-	uv pip install .
+	uv pip install -r src/fyodorov_utils/requirements.txt
 
 build:
-	rm -rf ./dist ./build
+	rm -rf ./dist
+	rm -rf ./build
 	python3 -m build
 
 release: install-src install build publish
