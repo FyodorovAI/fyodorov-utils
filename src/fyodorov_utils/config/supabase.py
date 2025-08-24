@@ -6,6 +6,7 @@ settings = Settings()
 
 
 def get_supabase(jwt: str = None) -> Client:
+    print("Getting supabase client")
     if jwt and jwt != "" and len(jwt.split(".")) == 3:
         return create_client(
             settings.SUPABASE_URL,
