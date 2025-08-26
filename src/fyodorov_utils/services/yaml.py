@@ -11,7 +11,7 @@ from fyodorov_llm_agents.models.llm_model import LLMModel
 from fyodorov_llm_agents.tools.mcp_tool_service import MCPTool as Tool
 from fyodorov_llm_agents.tools.mcp_tool_model import MCPTool as ToolModel
 from fyodorov_llm_agents.instances.instance_model import InstanceModel
-from fyodorov_llm_agents.models.llm_service import LLM
+from fyodorov_llm_agents.models.llm_service import LLMService
 from fyodorov_llm_agents.instances.instance_service import Instance
 from fyodorov_llm_agents.agents.agent_service import AgentService as Agent
 
@@ -53,10 +53,11 @@ async def create_from_yaml(request: Request, user=Depends(authenticate)):
             for model_dict in fyodorov_config["models"]:
                 model = LLMModel.from_dict(model_dict)
                 print(f"Model: {model}")
-                new_model = await LLM.save_model_in_db(
+                llm_service = LLMService()
+                new_model = await llm_service.save_model_in_db(
                     user["session_id"], user["sub"], model
                 )
-                response["models"].append(new_model)
+                response["models"].append(new_model.to_dict())
         print("Saved models", response["models"])
         if "tools" in fyodorov_config:
             for tool_dict in fyodorov_config["tools"]:
@@ -108,7 +109,8 @@ async def get_yaml(user=Depends(authenticate)):
         }
         providers = await Provider.get_providers(limit=limit, user_id=user["sub"])
         result["providers"] = [provider.resource_dict() for provider in providers]
-        models = await LLM.get_models(limit=limit, user_id=user["sub"])
+        llm_service = LLMService()
+        models = await llm_service.get_models(access_token=user["session_id"], user_id=user["sub"], limit=limit)
         result["models"] = [model.resource_dict() for model in models]
         agents = await Agent.get_all_in_db(limit=limit, user_id=user["sub"])
         result["agents"] = [agent.resource_dict() for agent in agents]
@@ -144,7 +146,8 @@ async def get_yaml_by_name(resource_type: str, user=Depends(authenticate)):
                 provider.resource_dict() for provider in resources["providers"]
             ]
         elif resource_type == "models":
-            resources["models"] = await LLM.get_models(limit=limit, user_id=user["sub"])
+            llm_service = LLMService()
+            resources["models"] = await llm_service.get_models(access_token=user["session_id"], user_id=user["sub"], limit=limit)
             resources["models"] = [
                 models.resource_dict() for models in resources["models"]
             ]
